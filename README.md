@@ -1,6 +1,8 @@
 # cakephp-cors
 
-A CakePHP 5 plugin for activate cors domain in your application with [Middleware](http://book.cakephp.org/3.0/en/controllers/middleware.html).
+A CakePHP 5 plugin for activate cors domain in your application with [Middleware](https://book.cakephp.org/5/en/controllers/middleware.html).
+
+Forked from [ozee31/cakephp-cors] as it seems to abdoned.
 
 [Learn more about CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
 
@@ -14,44 +16,22 @@ The recommended way to install composer packages is:
 composer require rrd108/cakephp-cors
 ```
 
-## Quick Start
+Then load the plugin with the command:
 
-Loading the Plugin
-
-```PHP
-// In src/Application.php
-public function bootstrap(): void
-{
-    // code ...
-    $this->addPlugin('Cors');
-}
 ```
+bin/cake plugin load Cors
+```
+
+## Changing the default settings
 
 By default the plugin authorize cors for all origins, all methods and all headers and caches all for one day.
+If you are happy with the default settings, you can skip this section.
 
-## Configuration
+If you want to change any of the values then create your own `config/cors.php` file at your project's `config` directory. In your config file, you should use only those keys that you want to change. It will be merged to the default one. So, for example, if you are happy with all the options, except `AllowOrigin` default, then you have to put this into your on config file.
 
-### Default configuration
-
-```PHP
-<?php
-[
-    'AllowOrigin' => true, // accept all origin
-    'AllowCredentials' => true,
-    'AllowMethods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // accept all HTTP methods
-    'AllowHeaders' => true, // accept all headers
-    'ExposeHeaders' => false, // don't accept personal headers
-    'MaxAge' => 86400, // cache for 1 day
-    'exceptionRenderer' => 'Cors\Error\AppExceptionRenderer', // Use ExeptionRenderer class of plugin
-```
-
-### Change config
-
-In `app.php` add :
-
-```PHP
+```php
 'Cors' => [
-    // My Config
+  'AllowOrigin' => ['http://localhost:5173', 'https://example.com'],
 ]
 ```
 
@@ -59,7 +39,7 @@ In `app.php` add :
 
 A returned resource may have one Access-Control-Allow-Origin header, with the following syntax:
 
-```PHP
+```php
 'Cors' => [
     // Accept all origins
     'AllowOrigin' => true,
@@ -67,10 +47,10 @@ A returned resource may have one Access-Control-Allow-Origin header, with the fo
     'AllowOrigin' => '*',
 
     // Accept one origin
-    'AllowOrigin' => 'http://flavienbeninca.fr'
+    'AllowOrigin' => 'http://webmania.cc'
 
     // Accept many origins
-    'AllowOrigin' => ['http://flavienbeninca.fr', 'http://google.com']
+    'AllowOrigin' => ['http://webmania.cc', 'https://example.com']
 ]
 ```
 
@@ -78,7 +58,7 @@ A returned resource may have one Access-Control-Allow-Origin header, with the fo
 
 The Access-Control-Allow-Credentials header Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials. Note that simple GET requests are not preflighted, and so if a request is made for a resource with credentials, if this header is not returned with the resource, the response is ignored by the browser and not returned to web content.
 
-```PHP
+```php
 'Cors' => [
     'AllowCredentials' => true,
     // OR
@@ -88,7 +68,7 @@ The Access-Control-Allow-Credentials header Indicates whether or not the respons
 
 #### AllowMethods ([Access-Control-Allow-Methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS#Access-Control-Allow-Methods))
 
-```PHP
+```php
 'Cors' => [
     // string
     'AllowMethods' => 'POST',
@@ -101,7 +81,7 @@ The Access-Control-Allow-Credentials header Indicates whether or not the respons
 
 The Access-Control-Allow-Headers header is used in response to a preflight request to indicate which HTTP headers can be used when making the actual request.
 
-```PHP
+```php
 'Cors' => [
     // accept all headers
     'AllowHeaders' => true,
@@ -118,7 +98,7 @@ The Access-Control-Allow-Headers header is used in response to a preflight reque
 
 The Access-Control-Expose-Headers header lets a server whitelist headers that browsers are allowed to access. For example:
 
-```PHP
+```php
 'Cors' => [
     // nothing
     'ExposeHeaders' => false,
@@ -135,7 +115,7 @@ The Access-Control-Expose-Headers header lets a server whitelist headers that br
 
 The Access-Control-Max-Age header indicates how long the results of a preflight request can be cached. For an example of a preflight request, see the above examples.
 
-```PHP
+```php
 'Cors' => [
     // no cache
     'MaxAge' => false,
@@ -147,19 +127,3 @@ The Access-Control-Max-Age header indicates how long the results of a preflight 
     'MaxAge' => 86400,
 ]
 ```
-
-#### exceptionRenderer
-
-This option overload default `exceptionRenderer` in `app.php`.
-
-By default this class extends from `Error.exceptionRenderer` to add Cors Headers
-
-If you don't want to overload exceptionRenderer, You must write
-
-```PHP
-'Cors' => [
-	'exceptionRenderer' => false
-]
-```
-
-[Read more](http://book.cakephp.org/3.0/en/development/errors.html#extend-the-baseerrorhandler)
