@@ -70,9 +70,7 @@ The Access-Control-Allow-Credentials header Indicates whether or not the respons
 
 ```php
 'Cors' => [
-    // string
-    'AllowMethods' => 'POST',
-    // OR array
+    // shoud be an array
     'AllowMethods' => ['GET', 'POST'],
 ]
 ```

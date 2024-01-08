@@ -1,16 +1,19 @@
 <?php
+
 namespace Cors\Tests\TestCase\Middleware;
 
+use TypeError;
 use Cake\Http\Response;
+use Cake\Core\Configure;
 use PHPUnit\Framework\TestCase;
 use Cake\Http\ServerRequestFactory;
-use Cors\Middleware\CorsMiddleware;
-use Cake\Core\Configure;
 use Psr\Http\Message\ResponseInterface;
+use Cors\Routing\Middleware\CorsMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class CorsMiddlewareTest extends TestCase {
+class CorsMiddlewareTest extends TestCase
+{
 
     private $server = [];
 
@@ -24,11 +27,9 @@ class CorsMiddlewareTest extends TestCase {
             'HTTP_ORIGIN' => 'http://test.com',
             'REQUEST_METHOD' => 'OPTIONS',
         ];
-        Configure::load('Cors.default', 'default');
-        Configure::write('Cors',  (array) Configure::consume('Cors-default'));
     }
 
-    private function _setServer(Array $server)
+    private function _setServer(array $server)
     {
         $this->server = array_merge($this->server, $server);
     }
@@ -86,7 +87,7 @@ class CorsMiddlewareTest extends TestCase {
         $headers = $response->getHeaders();
 
         $this->assertEquals('', current($headers['Access-Control-Allow-Headers']));
-        $this->assertEquals('GET, POST, PUT, PATCH, DELETE', current($headers['Access-Control-Allow-Methods']));
+        $this->assertEquals('GET, POST, PUT, PATCH, DELETE, OPTIONS', current($headers['Access-Control-Allow-Methods']));
         $this->assertEquals('', current($headers['Access-Control-Expose-Headers']));
     }
 
@@ -156,8 +157,8 @@ class CorsMiddlewareTest extends TestCase {
     public function testMethodString()
     {
         Configure::write('Cors.AllowMethods', 'GET');
-        $responseAllowMethods = $this->_sendRequest()->getHeaderLine('Access-Control-Allow-Methods');
-        $this->assertEquals('GET', $responseAllowMethods);
+        $this->expectException(TypeError::class);
+        $this->_sendRequest()->getHeaderLine('Access-Control-Allow-Methods');
     }
 
     public function testMethodArray()
