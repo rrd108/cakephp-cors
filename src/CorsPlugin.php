@@ -1,6 +1,6 @@
 <?php
 
-namespace Cors;
+namespace Rrd108\Cors;
 
 use Cake\Core\BasePlugin;
 use Cake\Http\MiddlewareQueue;

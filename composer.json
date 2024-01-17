@@ -1,7 +1,7 @@
 {
   "name": "rrd108/cakephp-cors",
   "description": "A CakePHP plugin for activate cors domain in your application",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "type": "cakephp-plugin",
   "license": "MIT",
   "require": {
@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Cors\\": "src"
+      "Rrd108\\Cors\\": "src"
     }
   },
   "autoload-dev": {

@@ -1,5 +1,6 @@
 <?php
-namespace Cors\Routing\Middleware;
+
+namespace Rrd108\Cors\Routing\Middleware;
 
 use Cake\Core\Configure;
 use Psr\Http\Message\ResponseInterface;
@@ -51,7 +52,6 @@ class CorsMiddleware implements MiddlewareInterface
                     ->withHeader('Access-Control-Allow-Headers', $this->_allowHeaders($request))
                     ->withHeader('Access-Control-Allow-Methods', $this->_allowMethods());
             }
-
         }
 
         return $response;

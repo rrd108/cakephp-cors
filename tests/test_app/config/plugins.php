@@ -1,4 +1,4 @@
 <?php
 return [
-    'Cors' => []
+    'Rrd108/Cors' => []
 ];
