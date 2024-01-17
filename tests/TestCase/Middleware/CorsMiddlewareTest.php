@@ -1,6 +1,6 @@
 <?php
 
-namespace Cors\Tests\TestCase\Middleware;
+namespace Rrd108\Cors\Tests\TestCase\Middleware;
 
 use TypeError;
 use Cake\Http\Response;
@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 use PHPUnit\Framework\TestCase;
 use Cake\Http\ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
-use Cors\Routing\Middleware\CorsMiddleware;
+use Rrd108\Cors\Routing\Middleware\CorsMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 

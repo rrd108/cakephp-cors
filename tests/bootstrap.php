@@ -47,4 +47,4 @@ Router::reload();
 
 $_SERVER['PHP_SELF'] = '/';
 
-Configure::load('Cors.cors');
+Configure::load('Rrd108/Cors.cors');
