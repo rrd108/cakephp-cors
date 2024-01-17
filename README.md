@@ -19,7 +19,7 @@ composer require rrd108/cakephp-cors
 Then load the plugin with the command:
 
 ```
-bin/cake plugin load Cors
+bin/cake plugin load Rrd108/Cors
 ```
 
 ## Changing the default settings
