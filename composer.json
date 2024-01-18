@@ -10,6 +10,7 @@
     "psr/http-server-middleware": "^1.0"
   },
   "require-dev": {
+    "cakephp/cakephp-codesniffer": "@stable",
     "phpunit/phpunit": "^10.1"
   },
   "autoload": {
@@ -19,11 +20,18 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Cors\\Test\\": "tests",
-      "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+      "TestApp\\": "tests/test_app/src",
+      "Rrd108\\Cors\\Tests\\": "tests"
     }
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit",
+    "cs-check": "phpcs --colors -p ./src ./tests",
+    "cs-fix": "phpcbf --colors -p ./src ./tests"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

@@ -1,25 +1,25 @@
 <?php
+declare(strict_types=1);
 
 namespace Rrd108\Cors\Tests\TestCase\Middleware;
 
-use TypeError;
-use Cake\Http\Response;
 use Cake\Core\Configure;
-use PHPUnit\Framework\TestCase;
+use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use Rrd108\Cors\Routing\Middleware\CorsMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Rrd108\Cors\Routing\Middleware\CorsMiddleware;
+use TypeError;
 
 class CorsMiddlewareTest extends TestCase
 {
-
     private $server = [];
 
-    const BASE_ORIGIN = 'http://test.com';
+    public const BASE_ORIGIN = 'http://test.com';
 
-    public function setUp(): Void
+    public function setUp(): void
     {
         parent::setUp();
         $this->server = [
@@ -37,9 +37,25 @@ class CorsMiddlewareTest extends TestCase
     private function _sendRequest()
     {
         $request = ServerRequestFactory::fromGlobals($this->server);
-        $handler = new RequestHandlerStub();
+        $handler = new class implements RequestHandlerInterface
+        {
+            public $callable;
+
+            public function __construct(?callable $callable = null)
+            {
+                $this->callable = $callable ?: function ($request) {
+                    return new Response();
+                };
+            }
+
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return ($this->callable)($request);
+            }
+        };
         $middleware = new CorsMiddleware();
         $response = $middleware->process($request, $handler);
+
         return $response;
     }
 
@@ -95,6 +111,7 @@ class CorsMiddlewareTest extends TestCase
     {
         Configure::write('Cors.AllowOrigin', $allowUrl);
         $this->_setServer(['HTTP_ORIGIN' => $originUrl]);
+
         return $this->_sendRequest()->getHeaderLine('Access-Control-Allow-Origin');
     }
 
@@ -223,22 +240,5 @@ class CorsMiddlewareTest extends TestCase
         Configure::write('Cors.MaxAge', false);
         $responseMaxAge = $this->_sendRequest()->getHeaderLine('Access-Control-Max-Age');
         $this->assertEquals(0, $responseMaxAge);
-    }
-}
-
-class RequestHandlerStub implements RequestHandlerInterface
-{
-    public $callable;
-
-    public function __construct(?callable $callable = null)
-    {
-        $this->callable = $callable ?: function ($request) {
-            return new Response();
-        };
-    }
-
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        return ($this->callable)($request);
     }
 }

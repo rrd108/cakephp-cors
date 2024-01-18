@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use Cake\Core\Configure;
@@ -19,7 +18,6 @@ $findRoot = function ($root) {
 $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
-
 
 define('ROOT', $root . DS . 'tests' . DS . 'test_app' . DS);
 define('CONFIG', ROOT . DS . 'config' . DS);
